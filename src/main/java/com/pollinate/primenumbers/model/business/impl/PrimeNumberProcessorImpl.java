@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 public class PrimeNumberProcessorImpl implements PrimeNumberProcessor {
 
     @Autowired
-    private PrimeNumberFactory primeNumberFactory;
+    private PrimeNumberAlgorithmFactory primeNumberAlgorithmFactory;
 
     /**
      * This is the asynchronous method that generates prime numbers of the given range.
@@ -35,7 +35,7 @@ public class PrimeNumberProcessorImpl implements PrimeNumberProcessor {
         }
         if (list != null && !list.isEmpty()) {
             for (Long number : list) {
-                if (primeNumberFactory.getPrimeNumberAlgorithm(algorithm.get()).isPrime(number)) {
+                if (primeNumberAlgorithmFactory.getPrimeNumberAlgorithm(algorithm.get()).isPrime(number)) {
                     primeNumbers.add(number);
                 }
             }

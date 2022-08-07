@@ -13,7 +13,7 @@ import java.util.Map;
  *  Factory for various algorithms for generating prime numbers
  */
 @Component
-public class PrimeNumberFactory {
+public class PrimeNumberAlgorithmFactory {
 
     // For keeping a cache for instance of all algorithms
     private static final Map<String, PrimeNumberAlgorithm> primeNumberAlgorithmCache = new HashMap<>();
@@ -23,7 +23,7 @@ public class PrimeNumberFactory {
      * @param primeNumberAlgorithms
      */
     @Autowired
-    private PrimeNumberFactory(List<PrimeNumberAlgorithm> primeNumberAlgorithms) {
+    private PrimeNumberAlgorithmFactory(List<PrimeNumberAlgorithm> primeNumberAlgorithms) {
         for(PrimeNumberAlgorithm primeNumberAlgorithm : primeNumberAlgorithms) {
             primeNumberAlgorithmCache.put(primeNumberAlgorithm.getType(), primeNumberAlgorithm);
         }

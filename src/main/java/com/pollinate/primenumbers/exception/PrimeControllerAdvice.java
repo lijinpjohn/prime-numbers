@@ -1,7 +1,6 @@
 package com.pollinate.primenumbers.exception;
 
 import com.pollinate.primenumbers.utils.ApplicationConstants;
-import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +38,12 @@ public class PrimeNumberServiceImpl implements PrimeNumberService {
      * @return primeNumberDto
      */
     @Cacheable(ApplicationConstants.PRIMES)
-    public PrimeNumberDto calculatePrimeNumber(Long initial, Optional<String> algorithm) {
+    public PrimeNumberDto calculatePrimeNumber(String initial, Optional<String> algorithm) {
         validateInputs(initial,algorithm);
         PrimeNumberDto primeNumberDto = new PrimeNumberDto();
-        primeNumberDto.setInitial(initial);
+        primeNumberDto.setInitial(Long.parseLong(initial));
         // Here we set the prime number data returned to dto
-        primeNumberDto.setPrimes(getPrimeNumbers(initial,algorithm));
+        primeNumberDto.setPrimes(getPrimeNumbers(Long.parseLong(initial),algorithm));
         return primeNumberDto;
     }
 
@@ -118,15 +117,16 @@ public class PrimeNumberServiceImpl implements PrimeNumberService {
     }
 
 
-    private void validateInputs(Long initial, Optional<String> algorithm) {
-        if(!StringUtils.isNumeric(initial.toString())){
+    private void validateInputs(String initial, Optional<String> algorithm) {
+        if(!StringUtils.isNumeric(initial)){
             throw new PrimeNumberException(ApplicationConstants.INVALID_NUMBER);
-        } else if(initial < 2l){
+        } else if(Long.parseLong(initial) < 2l){
             throw new PrimeNumberException(ApplicationConstants.INVALID_RANGE);
         } else if(algorithm.isPresent()
                 && (!StringUtils.isAlpha(algorithm.get())
                     || algorithm.get().length() != 2
-                    || !algorithm.get().equals(ApplicationConstants.BRUTE_FORCE))){
+                    || !algorithm.get().equals(ApplicationConstants.BRUTE_FORCE)
+                    || !algorithm.get().equals(ApplicationConstants.COMMON_ALGORITHM))){
             throw new PrimeNumberException(ApplicationConstants.INVALID_ALGORITHM);
         }
     }

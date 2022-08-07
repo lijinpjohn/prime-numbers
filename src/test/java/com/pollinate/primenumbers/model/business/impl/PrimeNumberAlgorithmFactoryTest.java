@@ -11,20 +11,20 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.concurrent.ExecutionException;
 
 @RunWith(SpringRunner.class)
-public class PrimeNumberFactoryTest {
+public class PrimeNumberAlgorithmFactoryTest {
 
-    private PrimeNumberFactory primeNumberFactory;
+    private PrimeNumberAlgorithmFactory primeNumberAlgorithmFactory;
 
     @Before
     public void setUp() throws Exception{
-        primeNumberFactory = (PrimeNumberFactory)Class
-                .forName("com.pollinate.primenumbers.model.business.impl.PrimeNumberFactory")
+        primeNumberAlgorithmFactory = (PrimeNumberAlgorithmFactory)Class
+                .forName("com.pollinate.primenumbers.model.business.impl.PrimeNumberAlgorithmFactory")
                 .newInstance();
     }
 
     @Test
     public void isPrimeTrueTest() throws ExecutionException, InterruptedException {
-        PrimeNumberAlgorithm actual = primeNumberFactory.getPrimeNumberAlgorithm(ApplicationConstants.BRUTE_FORCE);
+        PrimeNumberAlgorithm actual = primeNumberAlgorithmFactory.getPrimeNumberAlgorithm(ApplicationConstants.BRUTE_FORCE);
         Assert.assertTrue(actual instanceof BruteForceAlgorithmImpl);
     }
 

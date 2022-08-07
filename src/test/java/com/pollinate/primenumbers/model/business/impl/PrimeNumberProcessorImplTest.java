@@ -1,9 +1,5 @@
-package com.pollinate.primenumbers.service.impl;
+package com.pollinate.primenumbers.model.business.impl;
 
-import com.pollinate.primenumbers.configuration.ApplicationProperties;
-import com.pollinate.primenumbers.exception.PrimeNumberException;
-import com.pollinate.primenumbers.model.business.PrimeNumberProcessor;
-import com.pollinate.primenumbers.model.dto.PrimeNumberDto;
 import com.pollinate.primenumbers.utils.ApplicationConstants;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,69 +11,56 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @RunWith(SpringRunner.class)
-public class PrimeNumberServiceImplTest {
+public class PrimeNumberProcessorImplTest {
 
     @MockBean
-    private PrimeNumberProcessor primeNumberProcessor;
+    private PrimeNumberAlgorithmFactory primeNumberAlgorithmFactory;
 
-    private PrimeNumberServiceImpl primeNumberService;
+    @MockBean
+    private BruteForceAlgorithmImpl bruteForceAlgorithm;
 
-    private ApplicationProperties applicationProperties;
+    private PrimeNumberProcessorImpl primeNumberProcessor;
 
     @Before
     public void setUp(){
-        primeNumberService  = new PrimeNumberServiceImpl();
-        applicationProperties = new ApplicationProperties();
-        applicationProperties.setChunkSize("5");
-        ReflectionTestUtils.setField(primeNumberService,"primeNumberProcessor",primeNumberProcessor);
-        ReflectionTestUtils.setField(primeNumberService,"applicationProperties",applicationProperties);
+        primeNumberProcessor  = new PrimeNumberProcessorImpl();
+        ReflectionTestUtils.setField(primeNumberProcessor,"primeNumberFactory", primeNumberAlgorithmFactory);
     }
 
     @Test
-    public void calculatePrimeNumberInvalidNumberTest(){
-        PrimeNumberException primeNumberException = Assert.assertThrows(
-                PrimeNumberException.class,
-                () -> primeNumberService.calculatePrimeNumber("INVALID", Optional.empty()));
-        Assert.assertEquals(ApplicationConstants.INVALID_NUMBER,primeNumberException.getMessage());
-    }
-
-    @Test
-    public void calculatePrimeNumberLessThanTwoTest(){
-        PrimeNumberException primeNumberException = Assert.assertThrows(
-                PrimeNumberException.class,
-                () -> primeNumberService.calculatePrimeNumber("1", Optional.empty()));
-        Assert.assertEquals(ApplicationConstants.INVALID_RANGE,primeNumberException.getMessage());
-    }
-
-    @Test
-    public void calculatePrimeNumberAlgorithmInvalidTest(){
-        PrimeNumberException primeNumberException = Assert.assertThrows(
-                PrimeNumberException.class,
-                () -> primeNumberService.calculatePrimeNumber("2", Optional.of("INVALID")));
-        Assert.assertEquals(ApplicationConstants.INVALID_ALGORITHM,primeNumberException.getMessage());
-    }
-
-    @Test
-    public void calculatePrimeNumberSuccessTest(){
-        PrimeNumberDto expected = getPrimeNumberDto();
-        expected.setInitial(10l);
-        expected.setPrimes(Arrays.asList(2l,3l,5l,7l));
-        Mockito.when(primeNumberProcessor.process(Arrays.asList(2l), Optional.empty()))
-        .thenReturn(CompletableFuture.completedFuture(Arrays.asList(2l)));
-        Mockito.when(primeNumberProcessor.process(Arrays.asList(3l,5l,7l,9l), Optional.empty()))
-        .thenReturn(CompletableFuture.completedFuture(Arrays.asList(3l,5l,7l)));
-        PrimeNumberDto actual = primeNumberService.calculatePrimeNumber("10", Optional.empty());
+    public void processSuccessWithDefaultAlgorithmTest() throws ExecutionException, InterruptedException {
+        List<Long> expected = Arrays.asList(3l,5l,7l);
+        Mockito.when(primeNumberAlgorithmFactory.getPrimeNumberAlgorithm(ApplicationConstants.BRUTE_FORCE))
+        .thenReturn(bruteForceAlgorithm);
+        Mockito.when(bruteForceAlgorithm.isPrime(3l)).thenReturn(true);
+        Mockito.when(bruteForceAlgorithm.isPrime(5l)).thenReturn(true);
+        Mockito.when(bruteForceAlgorithm.isPrime(7l)).thenReturn(true);
+        Mockito.when(bruteForceAlgorithm.isPrime(9l)).thenReturn(false);
+        CompletableFuture<List<Long>> completableFuture = primeNumberProcessor.process(Arrays.asList(3l, 5l, 7l, 9l)
+                , Optional.empty());
+        List<Long> actual = completableFuture.get();
         Assert.assertEquals(expected,actual);
     }
 
-    private PrimeNumberDto getPrimeNumberDto() {
-        PrimeNumberDto primeNumberDto = new PrimeNumberDto();
-        primeNumberDto.setInitial(10l);
-        primeNumberDto.setPrimes(Arrays.asList(2l,3l,5l,7l));
-        return primeNumberDto;
+    @Test
+    public void processSuccessWithAlgorithmProvidedTest() throws ExecutionException, InterruptedException {
+        List<Long> expected = Arrays.asList(3l,5l,7l);
+        Mockito.when(primeNumberAlgorithmFactory.getPrimeNumberAlgorithm(ApplicationConstants.BRUTE_FORCE))
+                .thenReturn(bruteForceAlgorithm);
+        Mockito.when(bruteForceAlgorithm.isPrime(3l)).thenReturn(true);
+        Mockito.when(bruteForceAlgorithm.isPrime(5l)).thenReturn(true);
+        Mockito.when(bruteForceAlgorithm.isPrime(7l)).thenReturn(true);
+        Mockito.when(bruteForceAlgorithm.isPrime(9l)).thenReturn(false);
+        CompletableFuture<List<Long>> completableFuture = primeNumberProcessor.process(Arrays.asList(3l, 5l, 7l, 9l)
+                , Optional.of(ApplicationConstants.BRUTE_FORCE));
+        List<Long> actual = completableFuture.get();
+        Assert.assertEquals(expected,actual);
     }
+
 }

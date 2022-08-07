@@ -35,8 +35,8 @@ public class PrimeNumberControllerTest {
         PrimeNumberDto primeNumberDto = new PrimeNumberDto();
         primeNumberDto.setInitial(10l);
         primeNumberDto.setPrimes(Arrays.asList(2l,3l,5l,7l));
-        Mockito.when(primeNumberService.calculatePrimeNumber(2l,null)).thenReturn(primeNumberDto);
-        ResponseEntity<PrimeNumberDto> primeNumbers = primeNumberController.getPrimeNumbers(2l, null);
+        Mockito.when(primeNumberService.calculatePrimeNumber("2",null)).thenReturn(primeNumberDto);
+        ResponseEntity<PrimeNumberDto> primeNumbers = primeNumberController.getPrimeNumbers("2", null);
         Assert.assertEquals(HttpStatus.ACCEPTED,primeNumbers.getStatusCode());
         Assert.assertEquals(primeNumbers.getBody(),primeNumberDto);
     }
@@ -46,8 +46,8 @@ public class PrimeNumberControllerTest {
         PrimeNumberDto primeNumberDto = new PrimeNumberDto();
         primeNumberDto.setInitial(10l);
         primeNumberDto.setPrimes(Arrays.asList(2l,3l,5l,7l));
-        Mockito.when(primeNumberService.calculatePrimeNumber(2l, Optional.of("BF"))).thenReturn(primeNumberDto);
-        ResponseEntity<PrimeNumberDto> primeNumbers = primeNumberController.getPrimeNumbers(2l, Optional.of("BF"));
+        Mockito.when(primeNumberService.calculatePrimeNumber("2", Optional.of("BF"))).thenReturn(primeNumberDto);
+        ResponseEntity<PrimeNumberDto> primeNumbers = primeNumberController.getPrimeNumbers("2", Optional.of("BF"));
         Assert.assertEquals(HttpStatus.ACCEPTED,primeNumbers.getStatusCode());
         Assert.assertEquals(primeNumbers.getBody(),primeNumberDto);
     }

@@ -1,4 +1,4 @@
-package com.pollinate.primenumbers.configuration;
+package com.pollinate.primenumbers.stepdef;
 
 import com.pollinate.primenumbers.configuration.SpringIntegrationTest;
 import io.cucumber.java.en.Given;
@@ -22,9 +22,9 @@ public class StepDefsPrimeNumber extends SpringIntegrationTest {
     }
 
     @Then("the client receives response body {string}")
-    public void the_client_receives_response_body(int expectedBody) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void the_client_receives_response_body(String expectedBody) {
+        String actualBody = latestResponse.getBody();
+        Assert.assertEquals(expectedBody,actualBody);
     }
 
 }

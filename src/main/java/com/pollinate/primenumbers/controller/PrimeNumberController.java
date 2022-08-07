@@ -26,7 +26,7 @@ public class PrimeNumberController {
      * @return ResponseEntity
      */
     @GetMapping("/primes/{initial}")
-    public ResponseEntity<PrimeNumberDto> getPrimeNumbers(@PathVariable(value = "initial") Long initial, @RequestParam Optional<String> algorithm) {
+    public ResponseEntity<PrimeNumberDto> getPrimeNumbers(@PathVariable(value = "initial") String initial, @RequestParam Optional<String> algorithm) {
         return ResponseEntity.accepted().body(primeNumberService.calculatePrimeNumber(initial,algorithm));
     }
 }

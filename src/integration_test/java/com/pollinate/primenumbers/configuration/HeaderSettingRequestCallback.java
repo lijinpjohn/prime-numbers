@@ -1,4 +1,4 @@
-package java.com.pollinate.primenumbers.configuration;
+package com.pollinate.primenumbers.configuration;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.ClientHttpRequest;

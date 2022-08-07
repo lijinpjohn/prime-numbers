@@ -9,6 +9,6 @@ import java.util.Optional;
  */
 public interface PrimeNumberService {
 
-    PrimeNumberDto calculatePrimeNumber(Long initial, Optional<String> algorithm);
+    PrimeNumberDto calculatePrimeNumber(String initial, Optional<String> algorithm);
 
 }

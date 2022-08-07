@@ -1,7 +1,7 @@
-package com.pollinate.primenumbers.stepdef;
+package com.pollinate.primenumbers.configuration;
 
 import com.pollinate.primenumbers.PrimeNumberApplication;
-import com.pollinate.primenumbers.configuration.HeaderSettingRequestCallback;
+import com.pollinate.primenumbers.utils.ResponseResults;
 import com.pollinate.primenumbers.utils.TestApplicationConstants;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import com.pollinate.primenumbers.utils.ResponseResults;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
